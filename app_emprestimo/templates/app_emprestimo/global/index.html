@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'app_emprestimo/css/style.css' %}">
+        <title>Controle Empréstimo | {% block title %}{% endblock title %}</title>
+    </head>
+
+    <body>
+        {% include "app_emprestimo/partials/header.html"%}
+
+        {% block content %}{% endblock content %}
+
+        
+        <footer>Footer</footer>
+    </body>
+</html>
