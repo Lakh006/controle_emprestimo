@@ -7,7 +7,7 @@
     <ul>
         {% for colaborador in colaboradores %}
             <li>
-                <p>{{ colaborador.nome }} - {{ colaborador.cpf }} - {{ colaborador.funcao }} | <a href="{% url 'deletar_colaborador' colaborador.idCOLABORADOR %}">Deletar</a></p>
+                <p>{{ colaborador.nome }} - {{ colaborador.cpf }} - {{ colaborador.funcao }} - {{ colaborador.data_admissao | date:'d-m-Y'}} | <a href="{% url 'deletar_colaborador' colaborador.idCOLABORADOR %}">Deletar</a> | <a href="{% url 'atualizar_colaborador' colaborador.idCOLABORADOR %}">Atualizar</a></p>
             </li>
         {% endfor %}
     </ul>

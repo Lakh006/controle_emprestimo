@@ -13,12 +13,5 @@
         <input type="date" name="data_admissao" placeholder="Data de admissão do colaborador">
         <button type="submit">Cadastrar</button>
     </form>
-    <ul>
-        {% for colaborador in colaboradores %}
-            <li>
-                <p>{{ colaborador.nome }} - {{ colaborador.cpf }} - {{ colaborador.funcao }} | <a href="{% url 'deletar_colaborador' colaborador.idCOLABORADOR %}">Deletar</a></p>
-            </li>
-        {% endfor %}
-    </ul>
 </main>
 {% endblock content %}
