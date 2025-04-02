@@ -16,7 +16,7 @@
     <ul>
         {% for colaborador in colaboradores %}
             <li>
-                <p>{{ colaborador.nome }} - {{ colaborador.cpf }} - {{ colaborador.funcao }}</p>
+                <p>{{ colaborador.nome }} - {{ colaborador.cpf }} - {{ colaborador.funcao }} | <a href="{% url 'deletar_colaborador' colaborador.idCOLABORADOR %}">Deletar</a></p>
             </li>
         {% endfor %}
     </ul>

@@ -1,0 +1,15 @@
+{% extends "app_emprestimo/global/index.html" %}
+
+{% block title %}Listar{% endblock title %}
+
+{% block content %}
+<main>
+    <ul>
+        {% for colaborador in colaboradores %}
+            <li>
+                <p>{{ colaborador.nome }} - {{ colaborador.cpf }} - {{ colaborador.funcao }} | <a href="{% url 'deletar_colaborador' colaborador.idCOLABORADOR %}">Deletar</a></p>
+            </li>
+        {% endfor %}
+    </ul>
+</main>
+{% endblock content %}
