@@ -1,0 +1,39 @@
+{% extends "global/base.html" %}
+
+{% block title %}Login - Sistema{% endblock title %}
+
+{% block content %}
+<div class="container login">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">Cadastro de gerente</h2>
+                    
+                    <form acrion="" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Gerente</label>
+                            <input type="text" class="form-control" name="nome" placeholder="Digite o usuário do gerente">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" name="cpf" placeholder="Digite o cpf do gerente">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" name="senha" placeholder="Digite a senha do gerente">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-login w-100">Cadastrar gerente</button>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
