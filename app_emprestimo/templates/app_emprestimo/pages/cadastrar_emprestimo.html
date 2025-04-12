@@ -1,0 +1,95 @@
+{% extends "global/base.html" %}
+
+{% block title %}Cadastrar Empréstimo{% endblock title %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>Cadastrar Empréstimo</h1>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Colaborador -->
+                        <div class="mb-3">
+                            <label for="idCOLABORADOR" class="form-label">Colaborador</label>
+                            <select class="form-select" id="idCOLABORADOR" name="idCOLABORADOR" required>
+                                <option value="" selected disabled>Selecione um colaborador</option>
+                                {% for colaborador in colaboradores %}
+                                    <option value="{{ colaborador.idCOLABORADOR }}">{{ colaborador.nome }} ({{ colaborador.cpf }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- EPI -->
+                        <div class="mb-3">
+                            <label for="idEPI" class="form-label">Equipamento (EPI)</label>
+                            <select class="form-select" id="idEPI" name="idEPI" required>
+                                <option value="" selected disabled>Selecione um equipamento</option>
+                                {% for epi in epis %}
+                                    <option value="{{ epi.idEPI }}">{{ epi.nome }} - {{ epi.descricao }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Datas -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="data_emprestimo" class="form-label">Data do Empréstimo</label>
+                                <input type="date" class="form-control" id="data_emprestimo" name="data_emprestimo" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="data_devolucao_prevista" class="form-label">Devolução Prevista</label>
+                                <input type="date" class="form-control" id="data_devolucao_prevista" name="data_devolucao_prevista" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Status -->
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" name="status" required>
+                                {% for choice in status_choices %}
+                                    <option value="{{ choice.0 }}" {% if choice.0 == 'Pendente' %}selected{% endif %}>{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Observação -->
+                        <div class="mb-3">
+                            <label for="observacao" class="form-label">Observação</label>
+                            <textarea class="form-control" id="observacao" name="observacao" rows="3"></textarea>
+                        </div>
+                        
+                        <!-- Botões -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-primary" type="submit">Cadastrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Define a data de empréstimo como hoje por padrão
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('data_emprestimo').value = today;
+    
+    // Calcula a data de devolução prevista (7 dias após o empréstimo)
+    const devolutionDate = new Date();
+    devolutionDate.setDate(devolutionDate.getDate() + 7);
+    document.getElementById('data_devolucao_prevista').value = devolutionDate.toISOString().split('T')[0];
+});
+</script>
+{% endblock content %}

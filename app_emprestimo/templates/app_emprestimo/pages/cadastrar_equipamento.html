@@ -1,0 +1,50 @@
+{% extends "global/base.html" %}
+
+{% block title %}cadastrar{% endblock title %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1>Equipamento</h1>
+                {% if erro %}
+                    <ul>
+                        <li>{{ mensagem }}</li>
+                    </ul>
+                {% elif erro == False %}
+                    <ul>
+                        <li>{{ mensagem }}</li>
+                    </ul>
+                {% endif %}
+                <div class="card">
+                    <div class="card-body">
+                            <!-- Primeiro Campo -->
+                            <div class="mb-3">
+                                <label for="campo1" class="form-label">Nome do equipamento</label>
+                                <input type="text" class="form-control" name="nome" placeholder="Nome do equipamento">
+                            </div>
+                            
+                            <!-- Segundo Campo -->
+                            <div class="mb-3">
+                                <label for="campo2" class="form-label">Descrição</label>
+                                <input type="text" class="form-control" name="descricao" placeholder="Descrição do equipamento">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="campo3" class="form-label">Quantidade Total</label>
+                                <input type="number" class="form-control" name="quantidade_total" min="0">
+                            </div>
+                            
+                            <!-- Botão Salvar -->
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit">Cadastrar</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock content %}

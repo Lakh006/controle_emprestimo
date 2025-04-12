@@ -1,17 +1,63 @@
 {% extends "global/base.html" %}
 
-{% block title %}cadastrar{% endblock title %}
+{% block title %}cadastrar colaborador{% endblock title %}
 
 {% block content %}
-<main>
-    <h1>Criar colaborador</h1>
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="text" name="nome" placeholder="Nome do colaborador">
+
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1>Cadastrar colaborador</h1>
+                {% if erro %}
+                    <ul>
+                        <li>{{ mensagem }}</li>
+                    </ul>
+                {% elif erro == False %}
+                    <ul>
+                        <li>{{ mensagem }}</li>
+                    </ul>
+                {% endif %}
+                <div class="card">
+                    <div class="card-body">
+                            <!-- Primeiro Campo -->
+                            <div class="mb-3">
+                                <label for="campo1" class="form-label">Nome</label>
+                                <input type="text" class="form-control" name="nome" placeholder="Nome do colaborador">
+                            </div>
+                            
+                            <!-- Segundo Campo -->
+                            <div class="mb-3">
+                                <label for="campo2" class="form-label">CPF</label>
+                                <input type="text" class="form-control" name="cpf" placeholder="CPF do colaborador">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="campo3" class="form-label">Função</label>
+                                <input type="text" class="form-control" name="funcao" placeholder="Função do colaborador">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="campo4" class="form-label">Data de admissão</label>
+                                <input type="date" class="form-control" name="data_admissao" placeholder="Data de admissão do colaborador">
+                            </div>
+                            
+                            <!-- Botão Salvar -->
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit">Cadastrar</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %} <input type="text" name="nome" placeholder="Nome do colaborador">
         <input type="text" name="cpf" placeholder="Cpf do colaborador">
         <input type="text" name="funcao" placeholder="Função do colaborador">
         <input type="date" name="data_admissao" placeholder="Data de admissão do colaborador">
-        <button type="submit">Cadastrar</button>
+        <button type="submit">Cadastrar</button> {% endcomment %}
     </form>
-</main>
 {% endblock content %}

@@ -23,3 +23,23 @@ class GerenteModel(models.Model):
     
     def __str__(self):
         return f"Gerente({self.nome}"
+    
+class EPIModel(models.Model):
+    idEPI = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=100)
+    descricao = models.TextField()
+    quantidade_total = models.IntegerField()
+    
+class EmprestimoModel(models.Model):
+    idEMPRESTIMO = models.AutoField(primary_key=True)
+    idCOLABORADOR = models.ForeignKey(ColaboradorModel, on_delete=models.CASCADE)
+    idEPI = models.ForeignKey(EPIModel, on_delete=models.CASCADE)
+    data_emprestimo = models.DateField()
+    data_devolucao_prevista = models.DateField()
+    STATUS_CHOICE = (
+        ('Pendente', 'Pendente'),
+        ('Atrasado', 'Atrasado'),
+        ('Devolvido', 'Devolvido'),
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICE, default='Pendente')
+    observacao = models.TextField(null=True)

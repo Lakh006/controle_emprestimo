@@ -1,0 +1,42 @@
+{% extends "global/base.html" %}
+
+{% block title %}Atualizar equipamento{% endblock title %}
+
+{% block content %}
+<form action="{% url 'atualizar_equipamento' epi.idEPI %}" method="post">
+{% comment %} <form action="{% url 'atualizar_equipamento' idEPI=request.resolver_match.kwargs.idEPI %}" method="post"> {% endcomment %}
+    {% csrf_token %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1>Atualizar Equipamento</h1>
+                <div class="card">
+                    <div class="card-body">
+                            <!-- Primeiro Campo -->
+                            <div class="mb-3">
+                                <label for="campo1" class="form-label">Nome do equipamento</label>
+                                <input type="text" class="form-control" name="nome" value="{{ epi.nome }}">
+                            </div>
+                            
+                            <!-- Segundo Campo -->
+                            <div class="mb-3">
+                                <label for="campo2" class="form-label">Descrição</label>
+                                <input type="text" class="form-control" name="descricao" value="{{ epi.descricao }}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="campo3" class="form-label">Quantidade Total</label>
+                                <input type="number" class="form-control" name="quantidade_total" min="0" value="{{ epi.quantidade_total }}">
+                            </div>
+                            
+                            <!-- Botão Salvar -->
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit">Atualizar</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock content %}

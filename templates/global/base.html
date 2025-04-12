@@ -4,17 +4,124 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <link href="{% static 'global/css/style.css' rel="stylesheet" %}">
         <title>Controle Empréstimo | {% block title %}{% endblock title %}</title>
     </head>
 
     <body>
         {% include "global/partials/header.html"%}
-
-        {% block content %}{% endblock content %}
-
         
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Menu Lateral -->
+                <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                    <!-- Menu Lateral -->
+                    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px; height: 100vh;">
+                        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                            <span class="fs-4">Menu</span>
+                        </a>
+                        <hr>
+                        <ul class="nav nav-pills flex-column mb-auto">
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" data-bs-toggle="collapse" href="#equipamento-collapse" aria-expanded="false">
+                                    <i class="bi bi-house-door me-2"></i>
+                                        Equipamento
+                                    <i class="bi bi-chevron-down ms-auto"></i>
+                                </a>
+                                <div class="collapse {% if 'equipamento' in request.path %}show{% endif %}" id="equipamento-collapse">
+                                    <ul class="nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a href="{% url 'cadastrar_equipamento' %}" class="nav-link {% if 'cadastrar_equipamento' in request.path %}link-primary{% else %}link-dark{% endif %}">
+                                               Cadastrar Equipamento
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'listar_equipamento' %}"  class="nav-link link-dark {% if 'equipamento' in request.path %}link-primary{% else %}link-dark{% endif %}">
+                                               Editar Equipamento
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" data-bs-toggle="collapse" href="#epi-collapse" aria-expanded="false">
+                                    <i class="bi bi-speedometer2 me-2"></i>
+                                        Controle EPI
+                                    <i class="bi bi-chevron-down ms-auto"></i>
+                                </a>
+                                <div class="collapse {% if 'controle' in request.path %}show{% endif %}" id="epi-collapse">
+                                    <ul class="nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a href="{% url 'cadastrar_emprestimo' %}" class="nav-link {% if 'registrar_acao' in request.path %}link-primary{% else %}link-dark{% endif %}">
+                                               Registrar ação
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link link-dark">
+                                               Relatórios
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            {% comment %} <li>
+                                <a href="#" class="nav-link link-dark">
+                                    <i class="bi bi-speedometer2 me-2"></i>
+                                    Controle EPI
+                                </a>
+                            </li> {% endcomment %}
+
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" data-bs-toggle="collapse" href="#colaborador-collapse" aria-expanded="false">
+                                    <i class="bi bi-people me-2"></i>
+                                        Colaborador
+                                    <i class="bi bi-chevron-down ms-auto"></i>
+                                </a>
+                                <div class="collapse {% if 'colaborador' in request.path %}show{% endif %}" id="colaborador-collapse">
+                                    <ul class="nav flex-column ms-3">
+                                        <li class="nav-item">
+                                            <a href="{% url 'cadastrar_colaborador' %}" class="nav-link {% if 'cadastrar_colaborador' in request.path %}link-primary{% else %}link-dark{% endif %}">
+                                               Cadastrar Colaborador
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'listar_colaborador' %}" class="nav-link link-dark">
+                                               Relatórios
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link link-dark">
+                                               Editar Equipamento
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            {% comment %} <li>
+                                <a href="{% url 'cadastrar' %}" class="nav-link link-dark">
+                                    <i class="bi bi-people me-2"></i>
+                                    Colaborador
+                                </a>
+                            </li> {% endcomment %}
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Conteúdo Principal -->
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                    {% block content %}{% endblock %}
+                </main>
+            </div>
+        </div>
+
+        {% comment %} {% block content %}{% endblock content %} {% endcomment %}
+
         <footer>Footer</footer>
+        
     </body>
 </html>
