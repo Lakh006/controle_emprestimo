@@ -1,17 +1,47 @@
 {% extends "global/base.html" %}
 
-{% block title %}Atualizar{% endblock title %}
+{% block title %}Atualizar equipamento{% endblock title %}
 
 {% block content %}
-<main>
-    <h1>Atualizar Colaborador</h1>
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="text" name="nome" placeholder="Nome do colaborador" value="{{colaborador.nome}}">
-        <input type="text" name="cpf" placeholder="Cpf do colaborador" value="{{colaborador.cpf}}">
-        <input type="text" name="funcao" placeholder="Função do colaborador" value="{{colaborador.funcao}}">
-        <input type="date" name="data_admissao" placeholder="Data de admissão do colaborador" value="{{colaborador.data_admissao | date:'Y-m-d'}}">
-        <button type="submit">Atualizar</button>
-    </form>
-</main>
+<form action="{% url 'atualizar_colaborador' colaborador.idCOLABORADOR %}" method="post">
+{% comment %} <form action="{% url 'atualizar_equipamento' idEPI=request.resolver_match.kwargs.idEPI %}" method="post"> {% endcomment %}
+    {% csrf_token %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1>Atualizar Equipamento</h1>
+                <div class="card">
+                    <div class="card-body">
+                            <!-- Primeiro Campo -->
+                            <div class="mb-3">
+                                <label for="campo1" class="form-label">Nome do colaborador</label>
+                                <input type="text" class="form-control" name="nome" value="{{ colaborador.nome }}">
+                            </div>
+                            
+                            <!-- Segundo Campo -->
+                            <div class="mb-3">
+                                <label for="campo2" class="form-label">CPF</label>
+                                <input type="text" class="form-control" name="cpf" value="{{ colaborador.cpf }}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="campo2" class="form-label">Funcao</label>
+                                <input type="text" class="form-control" name="funcao" value="{{ colaborador.funcao }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="campo4" class="form-label">Data de admissão</label>
+                                <input type="date" class="form-control" name="data_admissao" value="{{ colaborador.data_admissao | date:'Y-m-d' }}">
+                            </div>
+                            
+                            <!-- Botão Salvar -->
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit">Atualizar</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 {% endblock content %}

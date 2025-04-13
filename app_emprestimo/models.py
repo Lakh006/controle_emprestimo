@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 
 # Create your models here.
@@ -36,10 +38,19 @@ class EmprestimoModel(models.Model):
     idEPI = models.ForeignKey(EPIModel, on_delete=models.CASCADE)
     data_emprestimo = models.DateField()
     data_devolucao_prevista = models.DateField()
+    data_devolucao_real = models.DateField(null=True, blank=True)
     STATUS_CHOICE = (
-        ('Pendente', 'Pendente'),
-        ('Atrasado', 'Atrasado'),
+        ('Emprestado', 'Emprestado'),
+        ('Em uso', 'Em uso'),
+        ('Fornecido', 'Forncecido'),
         ('Devolvido', 'Devolvido'),
+        ('Danificado', 'Daificado'),
+        ('Perdido', 'Perdido'),
     )
-    status = models.CharField(max_length=20, choices=STATUS_CHOICE, default='Pendente')
-    observacao = models.TextField(null=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICE, default='Emprestado')   
+    observacao = models.TextField(null=True, blank=True)
+    
+    def clean(self):
+        # Converte timezone.now() para date antes de comparar
+        if self.data_devolucao_prevista <= timezone.now().date():
+            raise ValidationError("A data de devolução deve ser futura!")

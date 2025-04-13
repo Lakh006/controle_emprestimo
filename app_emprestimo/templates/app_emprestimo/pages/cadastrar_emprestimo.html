@@ -58,16 +58,32 @@
                             <label for="status" class="form-label">Status</label>
                             <select class="form-select" id="status" name="status" required>
                                 {% for choice in status_choices %}
-                                    <option value="{{ choice.0 }}" {% if choice.0 == 'Pendente' %}selected{% endif %}>{{ choice.1 }}</option>
+                                    {% if choice.0 == 'Devolvido' or choice.0 == 'Danificado' or choice.0 == 'Perdido' %}
+                                        <option value="{{ choice.0 }}" class="status-edicao">{{ choice.1 }}</option>
+                                    {% else %}
+                                        <option value="{{ choice.0 }}" {% if choice.0 == 'Emprestado' %}selected{% endif %}>
+                                            {{ choice.1 }}
+                                        </option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const isEdicao = window.location.pathname.includes('/editar/');
+                                    if (!isEdicao) {
+                                        document.querySelectorAll('.status-edicao').forEach(opt => {
+                                            opt.remove();  // Remove opções de edição
+                                        });
+                                    }
+                                });
+                            </script>
                         </div>
                         
                         <!-- Observação -->
-                        <div class="mb-3">
+                        {% comment %} <div class="mb-3">
                             <label for="observacao" class="form-label">Observação</label>
                             <textarea class="form-control" id="observacao" name="observacao" rows="3"></textarea>
-                        </div>
+                        </div> {% endcomment %}
                         
                         <!-- Botões -->
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">

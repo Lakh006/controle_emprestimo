@@ -1,0 +1,128 @@
+{% extends "global/base.html" %}
+
+{% block title %}Cadastrar Empréstimo{% endblock title %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>Cadastrar Empréstimo</h1>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Colaborador -->
+                        <div class="mb-3">
+                            <label for="idCOLABORADOR" class="form-label">Colaborador</label>
+                            <select class="form-select" id="idCOLABORADOR" name="idCOLABORADOR" required>
+                                <option value="" disabled>Selecione um colaborador</option>
+                                {% for colaborador in colaboradores %}
+                                    <option value="{{ colaborador.idCOLABORADOR }}" 
+                                            {% if colaborador.idCOLABORADOR == emprestimo.idCOLABORADOR_id %}selected{% endif %}>
+                                        {{ colaborador.nome }} ({{ colaborador.cpf }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- EPI -->
+                        <div class="mb-3">
+                            <label for="idEPI" class="form-label">Equipamento (EPI)</label>
+                            <select class="form-select" id="idEPI" name="idEPI" required>
+                                <option value="" disabled>Selecione um equipamento</option>
+                                {% for epi in epis %}
+                                    <option value="{{ epi.idEPI }}" 
+                                            {% if epi.idEPI == emprestimo.idEPI_id %}selected{% endif %}>
+                                        {{ epi.nome }} - {{ epi.descricao }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Datas -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="data_emprestimo" class="form-label">Data do Empréstimo</label>
+                                <input type="date" class="form-control" id="data_emprestimo" name="data_emprestimo" 
+                                       value="{{ emprestimo.data_emprestimo|date:'Y-m-d' }}" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="data_devolucao_prevista" class="form-label">Devolução Prevista</label>
+                                <input type="date" class="form-control" id="data_devolucao_prevista" name="data_devolucao_prevista" 
+                                       value="{{ emprestimo.data_devolucao_prevista|date:'Y-m-d' }}" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Status -->
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" name="status" required onchange="toggleCamposDevolucao()">
+                                {% for choice in status_choices %}
+                                    <option value="{{ choice.0 }}" {% if choice.0 == emprestimo.status %}selected{% endif %}>
+                                        {{ choice.1 }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Campos condicionais -->
+                        <div id="campos-devolucao" style="display: none;">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="data_devolucao_real" class="form-label">Data da Devolução</label>
+                                    <input type="date" class="form-control" id="data_devolucao_real" name="data_devolucao_real" 
+                                           value="{{ emprestimo.data_devolucao_real|date:'Y-m-d' }}">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="observacao" class="form-label">Observação na Devolução</label>
+                                <textarea class="form-control" id="observacao" name="observacao">{{ emprestimo.observacao }}</textarea>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            function toggleCamposDevolucao() {
+                                const status = document.getElementById('status').value;
+                                const camposDiv = document.getElementById('campos-devolucao');
+                                
+                                // Mostra apenas para Devolvido, Danificado ou Perdido
+                                if (['Devolvido', 'Danificado', 'Perdido'].includes(status)) {
+                                    camposDiv.style.display = 'block';
+                                    // Define a data atual como padrão se estiver vazia
+                                    if (!document.getElementById('data_devolucao_real').value) {
+                                        document.getElementById('data_devolucao_real').valueAsDate = new Date();
+                                    }
+                                } else {
+                                    camposDiv.style.display = 'none';
+                                }
+                            }
+                        
+                            // Executa ao carregar a página para verificar o status atual
+                            document.addEventListener('DOMContentLoaded', toggleCamposDevolucao);
+                        </script>
+                        
+                        <!-- Observação -->
+                        {% comment %} <div class="mb-3">
+                            <label for="observacao" class="form-label">Observação</label>
+                            <textarea class="form-control" id="observacao" name="observacao" rows="3"></textarea>
+                        </div> {% endcomment %}
+                        
+                        <!-- Botões -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-primary" type="submit">Atualizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock content %}

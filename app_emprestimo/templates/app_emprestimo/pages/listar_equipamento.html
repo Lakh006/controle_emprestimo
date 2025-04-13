@@ -46,7 +46,29 @@
                             <td>{{ equipamento.descricao }}</td> <!-- Removi o truncatechars -->
                             <td>{{ equipamento.quantidade_total }}</td>
                             <td>
-                                <a href="{% url 'deletar_equipamento' equipamento.idEPI %}" class="btn btn-sm btn-outline-danger rounded-1">Excluir</a> <!-- btn-sm em vez de btn-xs -->
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmarDelecao{{ epi.idEPI }}">
+                                    <i class="bi bi-trash"></i> Deletar
+                                </button>
+                                <div class="modal fade" id="confirmarDelecao{{ epi.idEPI }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirmar Exclusão</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Tem certeza que deseja deletar o equipamento <strong>{{ epi.nome }}</strong>? Esta ação não pode ser desfeita.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <form method="POST" action="{% url 'deletar_equipamento' equipamento.idEPI %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">Confirmar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <a href="{% url 'atualizar_equipamento' equipamento.idEPI %}" class="btn btn-sm btn-outline-primary rounded-1">Editar</a>
                             </td>
                         </tr>
