@@ -5,20 +5,22 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 # Create your views here.
+# Retorna a pagina principal
 def home(request):
     return render(request, 'app_emprestimo/pages/home.html')
 
+#funcao para cadastrar equipamento
 def cadastrar_equipamento(request):
-    if request.method == 'GET':
+    if request.method == 'GET': # Se o elemento for GET retorna a pagina
         return render(request, 'app_emprestimo/pages/cadastrar_equipamento.html')
     
 
-    nome = request.POST.get('nome')
+    nome = request.POST.get('nome') # Variavel para armazenar o nome, para validar se o equipamento ja esta cadastrado
 
-    erro = None
-    mensagem = None
+    erro = None # Variavel para armazenar o erro
+    mensagem = None # Variavel para armazenar a mensagem
 
-    if EPIModel.objects.filter(nome=nome).exists():
+    if EPIModel.objects.filter(nome=nome).exists(): # Filtra o equipamento pelo nome, se for verdadeiro retorna erro
         mensagem = "Equipamento ja cadastrado"
         erro = True
         return render(request, 'app_emprestimo/pages/cadastrar_equipamento.html', context={'erro':erro, 'mensagem':mensagem})
@@ -30,20 +32,20 @@ def cadastrar_equipamento(request):
         epi = EPIModel.objects.create(nome=nome, descricao=descricao, quantidade_total=quantidade_total)
     return render(request, 'app_emprestimo/pages/cadastrar_equipamento.html', context={'erro':erro, 'mensagem':mensagem})
     
-def listar_equipamento(request):
+def listar_equipamento(request): # Funcao simples para retornar todos os equipamentos cadastrados no banco de dados
     equipamentos = EPIModel.objects.all()
     return render(request, 'app_emprestimo/pages/listar_equipamento.html', context={'equipamentos':equipamentos})
 
-def atualizar_equipamento(request, idEPI):
+def atualizar_equipamento(request, idEPI): # Funcao para caso o equipamento seja atualizado
     if request.method == 'GET':
-        epi = EPIModel.objects.get(idEPI=idEPI)
-        return render(request, 'app_emprestimo/pages/atualizar_equipamento.html', context={'epi':epi})
-    
+        epi = EPIModel.objects.get(idEPI=idEPI) # Variavel para pega o id do equipamento
+        return render(request, 'app_emprestimo/pages/atualizar_equipamento.html', context={'epi':epi}) # Retorna a pagina, junto com o id
+    #atualiza os dados necessarios do equipamento
     nome = request.POST.get('nome')
     descricao = request.POST.get('descricao')
     quantidade_total = request.POST.get('quantidade_total')
     EPIModel.objects.filter(idEPI=idEPI).update(nome=nome, descricao=descricao, quantidade_total=quantidade_total)
-    return redirect('listar_equipamento')
+    return redirect('listar_equipamento') # Redireciona para a pagina de listar equipamentos
 
 def deletar_equipamento(request, idEPI):
     epi = EPIModel.objects.get(idEPI=idEPI)
@@ -51,7 +53,7 @@ def deletar_equipamento(request, idEPI):
     return redirect('listar_equipamento')
 
 def cadastrar_emprestimo(request):
-    if request.method == 'POST':
+    if request.method == 'POST': # Se o metodo for do tipo post tente:
         try:
             emprestimo = EmprestimoModel(
                 idCOLABORADOR_id=request.POST.get('idCOLABORADOR'),
@@ -61,20 +63,20 @@ def cadastrar_emprestimo(request):
                 status=request.POST.get('status'),
                 observacao=request.POST.get('observacao', '')
             )
-            emprestimo.full_clean()
-            emprestimo.save()
-            messages.success(request, 'Empréstimo cadastrado com sucesso!')
-        except Exception as e:
-            messages.error(request, f'Erro ao cadastrar empréstimo: {str(e)}')
+            emprestimo.full_clean() # Valida os dados do emprestimo, garantindo dados validos
+            emprestimo.save() # Funcao para guardar os dados emprestimos no banco de dados
+            messages.success(request, 'Empréstimo cadastrado com sucesso!') # Mensagem de sucesso
+        except Exception as e: # Se ocorrer uma excecao
+            messages.error(request, f'Erro ao cadastrar empréstimo: {str(e)}') # Mensagem de erro, juntamente com o erro encontrado
     
     context = {
         'colaboradores': ColaboradorModel.objects.all(),
         'epis': EPIModel.objects.all(),
         'status_choices': EmprestimoModel.STATUS_CHOICE
-    }
-    return render(request, 'app_emprestimo/pages/cadastrar_emprestimo.html', context)
+    } # Guarda em um diario para que essas informacoes possam ser colocadas na pagina
+    return render(request, 'app_emprestimo/pages/cadastrar_emprestimo.html', context) # Retorna a pagina, juntamente com o context
 
-def atualizar_emprestimo(request, idEMPRESTIMO):
+def atualizar_emprestimo(request, idEMPRESTIMO): # Funcao para atualizar os emprestimos
     if request.method == 'GET':
         emprestimo = EmprestimoModel.objects.get(idEMPRESTIMO=idEMPRESTIMO)
         context = {
@@ -95,14 +97,14 @@ def atualizar_emprestimo(request, idEMPRESTIMO):
     emprestimo.status = request.POST.get('status')
     emprestimo.observacao = request.POST.get('observacao', '')
     emprestimo.save()
-    return redirect('listar_relatorio')
+    return redirect('listar_relatorio') # Rertona para a pagina de listar emprestimos
 
 # def deletar_emprestimo(request, idEMPRESTIMO):
 #     emprestimo = EmprestimoModel.objects.get(idEMPRESTIMO=idEMPRESTIMO)
 #     emprestimo.delete()
 #     return redirect('listar_emprestimos')
 
-@login_required
+@login_required # **** Terminar ****
 def cadastro_gerente(request):
     if request.method == 'GET':
         return render(request, 'app_emprestimo/pages/cadastrar_gerente.html')
@@ -113,19 +115,18 @@ def cadastro_gerente(request):
     gerente = GerenteModel.objects.create(nome=nome, cpf=cpf, senha=senha)
     return render(request, 'app_emprestimo/pages/cadastrar_gerente.html')
 
-def cadastrar_colaborador(request):
+def cadastrar_colaborador(request): # Funcao para cadastrar colaboradores
     if request.method == 'GET':
         return render(request, 'app_emprestimo/pages/cadastrar_colaborador.html')
     
-
     cpf = request.POST.get('cpf')
 
     erro = None
     mensagem = None
 
-    if ColaboradorModel.objects.filter(cpf=cpf).exists():
+    if ColaboradorModel.objects.filter(cpf=cpf).exists(): # Verifica se o cpf ja esta cadastrado no banco de dados
         mensagem = "Colaborador ja cadastrado"
-        erro = True
+        erro = True # Erro
         return render(request, 'app_emprestimo/pages/cadastrar_colaborador.html', context={'erro':erro, 'mensagem':mensagem})
     else:
         mensagem = "Colaborador cadastrado com sucesso"
@@ -136,7 +137,6 @@ def cadastrar_colaborador(request):
         colaborador = ColaboradorModel.objects.create(nome=nome, cpf=cpf, funcao=funcao, data_admissao=data_admissao)
     return render(request, 'app_emprestimo/pages/cadastrar_colaborador.html', context={'erro':erro, 'mensagem':mensagem})
 
-# MUDAR NOME
 def listar_colaborador(request):
     colaboradores = ColaboradorModel.objects.all()
     return render(request, 'app_emprestimo/pages/listar_colaborador.html', context={'colaboradores':colaboradores})
