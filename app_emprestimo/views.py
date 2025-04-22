@@ -161,9 +161,31 @@ def atualizar_colaborador(request, idCOLABORADOR):
 def login_request(request):
     if request.method == 'POST':
         cpf = request.POST.get('cpf')
-        password = request.POST.get('password')
+        senha = request.POST.get('senha')
         
-        gerente = authenticate(request, cpf=cpf, password=password)
+        if not cpf or not senha:
+            mensage = 'Por favor, preencha todos os campos.'
+            erro = True
+            return render(request, 'app_emprestimo/pages/login.html', context={'erro':erro, 'mensagem':mensage})
+        
+        try:
+            gerente =GerenteModel.objects.get(cpf=cpf)
+
+            if gerente.senha == senha:
+                return redirect('home')
+            else:
+                mensage = 'Senha incorreta.'
+                erro = True
+                return render(request, 'app_emprestimo/pages/login.html', context={'erro':erro, 'mensagem':mensage})
+
+
+        except GerenteModel.DoesNotExist:
+            mensage = 'Gerente não encontrado.'
+            erro = True
+            return render(request, 'app_emprestimo/pages/login.html', context={'erro':erro, 'mensagem':mensage})
+            
+
+        gerente = authenticate(request, cpf=cpf, senha=senha)
 
         if gerente is not None:
             login(request, gerente)

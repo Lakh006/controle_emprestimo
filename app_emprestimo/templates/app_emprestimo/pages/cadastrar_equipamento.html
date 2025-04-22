@@ -10,13 +10,13 @@
             <div class="col-md-6">
                 <h1>Equipamento</h1>
                 {% if erro %}
-                    <ul>
-                        <li>{{ mensagem }}</li>
-                    </ul>
+                    <div class="alert alert-danger mb-3">
+                        {{ mensagem }}
+                    </div>
                 {% elif erro == False %}
-                    <ul>
-                        <li>{{ mensagem }}</li>
-                    </ul>
+                    <div class="alert alert-danger mb-3">
+                        {{ mensagem }}
+                    </div>
                 {% endif %}
                 <div class="card">
                     <div class="card-body">
